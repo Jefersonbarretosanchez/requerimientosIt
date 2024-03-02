@@ -81,13 +81,14 @@ WSGI_APPLICATION = 'djangoRequerimientos.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
-        conn_max_age=600
-    )
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
 
+DATABASES["default"] = dj_database_url.parse(
+    "postgres://requerimientosti_user:dgANexrshfbYu0Pg0SK4SBDHAViaEq1t@dpg-cnh887icn0vc73de6vd0-a.oregon-postgres.render.com/requerimientosti")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -125,12 +126,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-if not DEBUG: #Tell Django to copy statics to the 'staticfiles' directory
-    #in your application directory on render.
-    STATIC_ROOT=os.path.join(BASE_DIR, 'staticfiles')
-    #Turn on WhiteNoise storage backend that takes care of compressing static files
-    #and creating unique names for each version so they can safely be cached forever.
-    STATICFILES='whitenoise.storage.CompressedManifestStaticFliesStorage'
+if not DEBUG:  # Tell Django to copy statics to the 'staticfiles' directory
+    # in your application directory on render.
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    # Turn on WhiteNoise storage backend that takes care of compressing static files
+    # and creating unique names for each version so they can safely be cached forever.
+    STATICFILES = 'whitenoise.storage.CompressedManifestStaticFliesStorage'
 
 LOGIN_URL = '/login'
 # Default primary key field type
