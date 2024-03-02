@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Requerimientos(models.Model):
     """Class representing a requerimiento"""
     ticket=models.CharField(max_length=100)
-    requerimiento=models.CharField(max_length=100)
+    requerimiento=models.CharField(max_length=100, blank=True)
     fechaCreacion=models.DateField(blank=False)
     fechaPruebas=models.DateField(null=True)
     fechaRegistro=models.DateTimeField(auto_now_add=True)
