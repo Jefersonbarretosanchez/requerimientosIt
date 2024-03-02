@@ -23,10 +23,10 @@ urlpatterns = [
     path('', views.signin, name='signin'),
     path('login/', views.signin, name='signin'),
     path('signup/', views.signup, name='signup'),
-    path('task/', views.task, name='task'),
+    path('requerimientos/', views.task, name='task'),
     path('logout/', views.signout, name='logout'),
-    path('requerimientos/', views.create_req, name='requerimientos'),
-    path('task/<int:reql_id>/', views.req_detail, name='req_detail'),
+    path('requerimientos/create', views.create_req, name='requerimientos'),
+    path('requerimientos//<int:reql_id>/', views.req_detail, name='req_detail'),
     path('tablero/', views.tablero, name='tablero')
     
 ]

@@ -1,30 +1,193 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container" style="padding: 2%;">
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>Ticket</th>
-            <th>Requerimiento</th>
-            <th>Fecha Creacion</th>
-            <th>Fecha Pruebas</th>
-            <th>Usuario Creo</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for reqs in reqs %}
-        <tr>
-            <!-- <td><a href="{% url 'req_detail' reqs.id %}">{{reqs.ticket}}</a></td> -->
-            <td>{{reqs.ticket}}</td>
-            <td>{{reqs.requerimiento}}</td>
-            <td>{{reqs.fechaCreacion}}</td>
-            <td>{{reqs.fechaPruebas}}</td>
-            <td>{{reqs.user.username}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
 
-</table>
+<!-- Modal Registros Nuevos -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 w-100 text-center" id="createModalLabel">Registrar Requerimiento</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" name="crearRequerimiento" id="crearRequerimiento" method="POST">
+                    <!-- <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="#" name="requerimientoId"
+                                id="requerimientoId" hidden>
+                        </div>
+                    </div> -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="ticket"># Ticket <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="id_ticket" name="ticket" placeholder="# Ticket" required>
+                        </div>
+                        <div class="col">
+                            <label for="requerimiento">Nombre Requerimiento <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="id_requerimiento" name="requerimiento"
+                                placeholder="Requerimiento" required>
+                        </div>
+
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="fechaCreacion">Fecha De Creación <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="id_fechaCreacion" name="fechaCreacion" required>
+                        </div>
+                        <div class="col">
+                            <label for="fechaEstimada">Fecha Estimada Pruebas <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="id_fechaPruebas" name="fechaPruebas">
+                        </div>
+                    </div>
+                    <!-- <div class="row mb-3">
+                        <div class="col">
+                            <label for="medioCarga">Medio De Carga <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3" aria-label="medioCarga" name="medioCarga" id="medioCarga">
+                                <option value="">----------------------</option>
+                                <option value="CORREO-IMPLEMENTACIÓN">CORREO-IMPLEMENTACIÓN</option>
+                                <option value="PORTAL">PORTAL</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label for="plataforma">Plataforma <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3" aria-label="plataforma" name="plataforma" id="plataforma">
+                                <option value="">----------------------</option>
+                                <option value="SIU">SIU</option>
+                                <option value="INCONCERT">INCONCERT</option>
+                                <option value="LMS">LMS</option>
+                                <option value="CORREO">CORREO</option>
+                                <option value="MICROSITIO">MICROSITIO</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="estado">Estado Ticket <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3" aria-label="estado" name="estado" id="estado">
+                                <option value="">----------------------</option>
+                                <option value="BACKLOG">BACKLOG</option>
+                                <option value="POR EJECUTAR">POR EJECUTAR</option>
+                                <option value="EN EJECUCION">EN EJECUCION</option>
+                                <option value="EN CERTIFICACIÓN">EN CERTIFICACIÓN</option>
+                                <option value="CERTIFICADO">CERTIFICADO</option>
+                                <option value="EN PRODUCCIÓN">EN PRODUCCIÓN</option>
+                                <option value="FINALIZADO">FINALIZADO</option>
+                                <option value="CANCELADO">CANCELADO</option>
+                                <option value="EN PAUSA">EN PAUSA</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label for="alianza">Alianza Solicitante <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3" aria-label="alianzaSolicitante" name="alianzaSolicitante"
+                                id="alianzaSolicitante">
+                                <option value="">----------------------</option>
+                                <option value="CENTRUM">CENTRUM</option>
+                                <option value="EAFIT">EAFIT</option>
+                                <option value="UCSS">UCSS</option>
+                                <option value="UDD">UDD</option>
+                                <option value="UNAB">UNAB</option>
+                                <option value="UNINORTE">UNINORTE</option>
+                                <option value="UNIS">UNIS</option>
+                                <option value="UP">UP</option>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="areaSolicitante">Area Solicitante <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3" aria-label="areaSolicitante" name="areaSolicitante"
+                                id="areaSolicitante">
+                                <option value="">----------------------</option>
+                                <option value="Gestión Matricula">Gestión Matricula</option>
+                                <option value="Operaciones Academicas">Operaciones Academicas</option>
+                                <option value="Implementación">Implementación</option>
+
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="responsable">Responsable Ticket <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3" aria-label="responsable" name="responsable"
+                                id="responsable">
+                                <option value="">----------------------</option>
+                                <option value="Fabrizzio Garzon">Fabrizzio Garzon</option>
+                                <option value="Jeferson Barreto">Jeferson Barreto</option>
+                                <option value="Raul Jaimes">Raul Jaimes</option>
+
+                            </select>
+                        </div>
+                    </div> -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="guardarRequerimiento">Registrar</button>
+                <!-- <button class="btn btn-primary d-none btnLoading" type="button" disabled id="loadingButton">
+                    <span class="spinner-border spinner-border-sm " aria-hidden="true"></span>
+                    <span role="status">Loading...</span>
+                </button> -->
+            </div>
+        </div>
+    </div>
 </div>
-{% endblock %}
+<!-- Fin del modal Creacion Requerimientos-->
+
+<div class="container">
+    <h1 style="text-align: center; color: white;">Requerimientos Desarrollos S4L</h1>
+
+    <div class="container mt-2">
+        <div class="row d-flex justify-content-evenly mb-3">
+            <div class="col-4">
+                <label for="input-search" style="color: white;"><strong>Nombre Del
+                        Requerimiento</strong></label>
+                <input type="text" class="form-control" id="input-search" placeholder="Requerimiento">
+            </div>
+            <div class="col-2">
+                <label for="input-anio" style="color: white;"><strong>Año</strong></label>
+                <input type="text" class="form-control" id="input-anio" placeholder="Año">
+            </div>
+            <div class="col-3">
+                <br>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                    Nuevo Requerimiento <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="container" style="padding: 2%;">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Ticket</th>
+                    <th>Requerimiento</th>
+                    <th>Fecha Creacion</th>
+                    <th>Fecha Pruebas</th>
+                    <th>Usuario Creo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reqs in reqs %}
+                <tr>
+                    <!-- <td><a href="{% url 'req_detail' reqs.id %}">{{reqs.ticket}}</a></td> -->
+                    <td>{{reqs.ticket}}</td>
+                    <td>{{reqs.requerimiento}}</td>
+                    <td>{{reqs.fechaCreacion}}</td>
+                    <td>{{reqs.fechaPruebas}}</td>
+                    <td>{{reqs.user.username}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    {% endblock %}
