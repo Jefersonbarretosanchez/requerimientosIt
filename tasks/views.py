@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def home(request):
-    return render(request, 'task.html')
+    return render(request, 'requerimientos.html')
 
 
 def signup(request):
@@ -41,17 +41,11 @@ def signup(request):
         })
 
 @login_required
-def task(request):
+def requerimientos(request):
     reqs = Requerimientos.objects.all()
    # cuando se quiera mostrar losm datos del usuario Logeado reqs = Requerimientos.objects.filter(user=request.user)
-    return render(request, 'task.html', {'reqs': reqs})
-
-@login_required
-def create_req(request):
     if request.method == 'GET':
-        return render(request, 'home.html', {
-            'form': RequerimientosForm
-        })
+        return render(request, 'requerimientos.html', {'reqs': reqs})
     else:
         try:
             form = RequerimientosForm(request.POST)
@@ -60,10 +54,30 @@ def create_req(request):
             new_req.save()
             return redirect('requerimientos')
         except ValueError:
-            return render(request, 'home.html', {
+            return render(request, 'requerimientos.html', {
+                'reqs': reqs,
                 'form': RequerimientosForm,
                 'error': 'Ingresa datos validos'
             })
+
+@login_required
+# def create_req(request):
+#     if request.method == 'GET':
+#         return render(request, 'requerimientos.html', {
+#             'form': RequerimientosForm
+#         })
+#     else:
+#         try:
+#             form = RequerimientosForm(request.POST)
+#             new_req = form.save(commit=False)
+#             new_req.user = request.user
+#             new_req.save()
+#             return redirect('requerimientos')
+#         except ValueError:
+#             return render(request, 'requerimientos.html', {
+#                 'form': RequerimientosForm,
+#                 'error': 'Ingresa datos validos'
+#             })
 @login_required
 def req_detail(request,reql_id):
     reql=get_object_or_404(Requerimientos,pk=reql_id)
@@ -90,7 +104,7 @@ def signin(request):
             })
         else:
             login(request, user)
-            return redirect('task')
+            return redirect('requerimientos')
 
 @login_required
 def tablero(request):
