@@ -10,10 +10,27 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+
 @login_required
 def home(request):
     reqs = Requerimientos.objects.all()
-    return render(request, 'requerimientos.html',{'reqs': reqs})
+   # cuando se quiera mostrar losm datos del usuario Logeado reqs = Requerimientos.objects.filter(user=request.user)
+    if request.method == 'GET':
+        return render(request, 'requerimientos.html', {'reqs': reqs})
+    else:
+        try:
+            form = RequerimientosForm(request.POST)
+            new_req = form.save(commit=False)
+            new_req.user = request.user
+            new_req.save()
+            return redirect('requerimientos')
+        except ValueError:
+            return render(request, 'requerimientos.html', {
+                'reqs': reqs,
+                'form': RequerimientosForm,
+                'error': 'Ingresa datos validos'
+            })
+
 
 def signup(request):
     if request.method == 'GET':
@@ -40,6 +57,7 @@ def signup(request):
             'error': 'Contraseñas No Coinciden :('
         })
 
+
 @login_required
 def requerimientos(request):
     reqs = Requerimientos.objects.all()
@@ -60,6 +78,7 @@ def requerimientos(request):
                 'error': 'Ingresa datos validos'
             })
 
+
 @login_required
 # def create_req(request):
 #     if request.method == 'GET':
@@ -79,9 +98,10 @@ def requerimientos(request):
 #                 'error': 'Ingresa datos validos'
 #             })
 @login_required
-def req_detail(request,reql_id):
-    reql=get_object_or_404(Requerimientos,pk=reql_id)
-    return render(request, 'req_detail.html',{'reql':reql})
+def req_detail(request, reql_id):
+    reql = get_object_or_404(Requerimientos, pk=reql_id)
+    return render(request, 'req_detail.html', {'reql': reql})
+
 
 @login_required
 def signout(request):
@@ -105,6 +125,7 @@ def signin(request):
         else:
             login(request, user)
             return redirect('requerimientos')
+
 
 @login_required
 def tablero(request):
