@@ -14,20 +14,21 @@
             <form action="" method="POST">
                 {% csrf_token %}
                 <div class="modal-body">
+                    {{form.as_p}}
                     <!-- <div class="row">
                         <div class="col">
                             <input type="text" class="form-control" placeholder="#" name="requerimientoId"
                                 id="requerimientoId" hidden>
                         </div>
                     </div> -->
-                    <div class="row mb-3">
+                    <!-- <div class="row mb-3">
                         <div class="col">
-                            <label for="ticket"># Ticket <span class="text-danger">*</span></label>
+                            <label for="id_ticket"># Ticket <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="id_ticket" name="ticket" placeholder="# Ticket"
                                 required>
                         </div>
                         <div class="col">
-                            <label for="requerimiento">Nombre Requerimiento <span class="text-danger">*</span></label>
+                            <label for="id_requerimiento">Nombre Requerimiento <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="id_requerimiento" name="requerimiento"
                                 placeholder="Requerimiento" required>
                         </div>
@@ -35,70 +36,53 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col">
-                            <label for="fechaCreacion">Fecha De Creación <span class="text-danger">*</span></label>
+                            <label for="id_fechaCreacion">Fecha De Creación <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="id_fechaCreacion" name="fechaCreacion" required>
                         </div>
                         <div class="col">
-                            <label for="fechaEstimada">Fecha Estimada Pruebas <span class="text-danger">*</span></label>
+                            <label for="id_fechaPruebas">Fecha Estimada Pruebas <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="id_fechaPruebas" name="fechaPruebas">
                         </div>
                     </div>
-                    <!-- <div class="row mb-3">
+                    <div class="row mb-3">
                         <div class="col">
-                            <label for="medioCarga">Medio De Carga <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3" aria-label="medioCarga" name="medioCarga" id="medioCarga">
-                                <option value="">----------------------</option>
-                                <option value="CORREO-IMPLEMENTACIÓN">CORREO-IMPLEMENTACIÓN</option>
-                                <option value="PORTAL">PORTAL</option>
-
+                            <label for="id_medioCarga">Medio De Carga <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3" aria-label="medioCarga" name="medioCarga"
+                                id="id_medioCarga" required>
+                                {% for medios in medios %}
+                                <option value="{{ medios.medioCarga }}">{{ medios.medioCarga }}</option>
+                                {% endfor %}
                             </select>
                         </div>
 
                         <div class="col">
-                            <label for="plataforma">Plataforma <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3" aria-label="plataforma" name="plataforma" id="plataforma">
-                                <option value="">----------------------</option>
-                                <option value="SIU">SIU</option>
-                                <option value="INCONCERT">INCONCERT</option>
-                                <option value="LMS">LMS</option>
-                                <option value="CORREO">CORREO</option>
-                                <option value="MICROSITIO">MICROSITIO</option>
-
+                            <label for="id_plataforma">Plataforma <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3" aria-label="plataforma" name="plataforma"
+                                id="id_plataforma" required>
+                                {% for plataformas in plataformas %}
+                                <option value="{{ plataformas.plataforma }}">{{ plataformas.plataforma }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
-                            <label for="estado">Estado Ticket <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3" aria-label="estado" name="estado" id="estado">
-                                <option value="">----------------------</option>
-                                <option value="BACKLOG">BACKLOG</option>
-                                <option value="POR EJECUTAR">POR EJECUTAR</option>
-                                <option value="EN EJECUCION">EN EJECUCION</option>
-                                <option value="EN CERTIFICACIÓN">EN CERTIFICACIÓN</option>
-                                <option value="CERTIFICADO">CERTIFICADO</option>
-                                <option value="EN PRODUCCIÓN">EN PRODUCCIÓN</option>
-                                <option value="FINALIZADO">FINALIZADO</option>
-                                <option value="CANCELADO">CANCELADO</option>
-                                <option value="EN PAUSA">EN PAUSA</option>
-
+                            <label for="id_estado">Estado Ticket <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3" aria-label="estado" name="estado" id="id_estado" required>
+                                {% for estados in estados %}
+                                <option value="{{ estados.estado }}">{{ estados.estado }}</option>
+                                {% endfor %}
                             </select>
                         </div>
 
                         <div class="col">
-                            <label for="alianza">Alianza Solicitante <span class="text-danger">*</span></label>
+                            <label for="id_alianzaSolicitante">Alianza Solicitante <span class="text-danger">*</span></label>
                             <select class="form-select mb-3" aria-label="alianzaSolicitante" name="alianzaSolicitante"
-                                id="alianzaSolicitante">
-                                <option value="">----------------------</option>
-                                <option value="CENTRUM">CENTRUM</option>
-                                <option value="EAFIT">EAFIT</option>
-                                <option value="UCSS">UCSS</option>
-                                <option value="UDD">UDD</option>
-                                <option value="UNAB">UNAB</option>
-                                <option value="UNINORTE">UNINORTE</option>
-                                <option value="UNIS">UNIS</option>
-                                <option value="UP">UP</option>
-
+                                id="id_alianzaSolicitante" required>
+                                {% for alianzas in alianzas %}
+                                <option value="{{ alianzas.alianzaSolicitante }}">{{ alianzas.alianzaSolicitante }}
+                                </option>
+                                {% endfor %}
                             </select>
                         </div>
 
@@ -106,25 +90,23 @@
 
                     <div class="row mb-3">
                         <div class="col">
-                            <label for="areaSolicitante">Area Solicitante <span class="text-danger">*</span></label>
+                            <label for="id_areaSolicitante">Area Solicitante <span class="text-danger">*</span></label>
                             <select class="form-select mb-3" aria-label="areaSolicitante" name="areaSolicitante"
-                                id="areaSolicitante">
-                                <option value="">----------------------</option>
-                                <option value="Gestión Matricula">Gestión Matricula</option>
-                                <option value="Operaciones Academicas">Operaciones Academicas</option>
-                                <option value="Implementación">Implementación</option>
-
+                                id="id_areaSolicitante" required>
+                                {% for areas in areas %}
+                                <option value="{{ areas.areaSolicitante }}">{{ areas.areaSolicitante }}
+                                </option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="col">
-                            <label for="responsable">Responsable Ticket <span class="text-danger">*</span></label>
+                            <label for="id_responsable">Responsable Ticket <span class="text-danger">*</span></label>
                             <select class="form-select mb-3" aria-label="responsable" name="responsable"
-                                id="responsable">
-                                <option value="">----------------------</option>
-                                <option value="Fabrizzio Garzon">Fabrizzio Garzon</option>
-                                <option value="Jeferson Barreto">Jeferson Barreto</option>
-                                <option value="Raul Jaimes">Raul Jaimes</option>
-
+                                id="id_responsable" required>
+                                {% for responsables in responsables %}
+                                <option value="{{ responsables.responsable }}">{{ responsables.responsable }}
+                                </option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div> -->

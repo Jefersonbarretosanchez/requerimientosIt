@@ -25,7 +25,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('requerimientos/', views.requerimientos, name='requerimientos'),
     path('logout/', views.signout, name='logout'),
-    # path('requerimientos/create', views.create_req, name='requerimientos'),
+    path('requerimientos/create', views.create_req, name='requerimientosc'),
     path('requerimientos//<int:reql_id>/', views.req_detail, name='req_detail'),
     path('tablero/', views.tablero, name='tablero')
     
