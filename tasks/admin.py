@@ -3,17 +3,17 @@ from .models import Requerimientos,MedioCarga,Plataforma,Estado,AlianzaSolicitan
 
 class RequerimientosAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Requerimientos"""
-    list_display=["id","ticket",'requerimiento','fechaCreacion','estado']
-    readonly_fields=("fechaRegistro",'fechaActualizacion')
+    list_display=["id","ticket",'requerimiento','fechacreacion','estado']
+    readonly_fields=("fecharegistro",'fecha_actualizacion')
     search_fields=['ticket','requerimiento']
     list_filter = ['estado']
-    ordering=['-fechaCreacion','requerimiento']
+    ordering=['-fechacreacion','requerimiento']
     list_display_links=['ticket']
     list_per_page=25 #Paginacion
     
 class MedioCargaAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Medio Carga"""
-    list_display=["id",'medioCarga']
+    list_display=["id",'mediocarga']
     readonly_fields=("fechaRegistro",'fechaActualizacion')
 
 class PlataformaAdmin(admin.ModelAdmin):
@@ -28,12 +28,12 @@ class EstadoAdmin(admin.ModelAdmin):
 
 class AlianzaAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Alianza"""
-    list_display=["id",'alianzaSolicitante']
+    list_display=["id",'alianzasolicitante']
     readonly_fields=("fechaRegistro",'fechaActualizacion')
     
 class AreaAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Areas"""
-    list_display=["id",'areaSolicitante']
+    list_display=["id",'areasolicitante']
     readonly_fields=("fechaRegistro",'fechaActualizacion')
     
 class ResponsableAdmin(admin.ModelAdmin):

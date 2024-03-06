@@ -9,7 +9,7 @@ class RequerimientosForm(ModelForm):
         """Modelo y campos"""
         model = Requerimientos
         fields = ['ticket', 'requerimiento',
-                  'fechaCreacion', 'fechaPruebas', 'medioCarga', 'plataforma', 'alianzaSolicitante', 'areaSolicitante', 'estado', 'responsable']
+                  'fechacreacion', 'fechapruebas', 'mediocarga', 'plataforma', 'alianzasolicitante', 'areasolicitante', 'estado', 'responsable']
         widgets = {
             'ticket': forms.TextInput(
                 attrs={
@@ -27,7 +27,7 @@ class RequerimientosForm(ModelForm):
                     'id': 'id_requerimiento'
                 }
             ),
-            'fechaCreacion': forms.DateInput(
+            'fechacreacion': forms.DateInput(
                 attrs={
                     'type': 'date',
                     'class': 'form-control',
@@ -36,7 +36,7 @@ class RequerimientosForm(ModelForm):
                     'id': 'id_fechaCreacion',
                 }
             ),
-            'fechaPruebas': forms.DateInput(
+            'fechapruebas': forms.DateInput(
                 attrs={
                     'type': 'date',
                     'class': 'form-control',
@@ -44,7 +44,7 @@ class RequerimientosForm(ModelForm):
                     'id': 'id_fechaPruebas',
                 }
             ),
-            'medioCarga': forms.Select(
+            'mediocarga': forms.Select(
                 attrs={
                     'class': 'form-select',
                     'placeholder': 'Medio Carga',
@@ -60,7 +60,7 @@ class RequerimientosForm(ModelForm):
                     'id': 'id_plataforma',
                 }
             ),
-            'alianzaSolicitante': forms.Select(
+            'alianzasolicitante': forms.Select(
                 attrs={
                     'class': 'form-select',
                     'placeholder': 'Alianza',
@@ -68,7 +68,7 @@ class RequerimientosForm(ModelForm):
                     'id': 'id_alianzaSolicitante',
                 }
             ),
-            'areaSolicitante': forms.Select(
+            'areasolicitante': forms.Select(
                 attrs={
                     'class': 'form-select',
                     'placeholder': 'Area',
