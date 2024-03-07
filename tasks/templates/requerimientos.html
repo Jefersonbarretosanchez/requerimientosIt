@@ -15,102 +15,6 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     {{form.as_p}}
-                    <!-- <div class="row">
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="#" name="requerimientoId"
-                                id="requerimientoId" hidden>
-                        </div>
-                    </div> -->
-                    <!-- <div class="row mb-3">
-                        <div class="col">
-                            <label for="id_ticket"># Ticket <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="id_ticket" name="ticket" placeholder="# Ticket"
-                                required>
-                        </div>
-                        <div class="col">
-                            <label for="id_requerimiento">Nombre Requerimiento <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="id_requerimiento" name="requerimiento"
-                                placeholder="Requerimiento" required>
-                        </div>
-
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label for="id_fechaCreacion">Fecha De Creación <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="id_fechaCreacion" name="fechaCreacion" required>
-                        </div>
-                        <div class="col">
-                            <label for="id_fechaPruebas">Fecha Estimada Pruebas <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="id_fechaPruebas" name="fechaPruebas">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label for="id_medioCarga">Medio De Carga <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3" aria-label="medioCarga" name="medioCarga"
-                                id="id_medioCarga" required>
-                                {% for medios in medios %}
-                                <option value="{{ medios.medioCarga }}">{{ medios.medioCarga }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <label for="id_plataforma">Plataforma <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3" aria-label="plataforma" name="plataforma"
-                                id="id_plataforma" required>
-                                {% for plataformas in plataformas %}
-                                <option value="{{ plataformas.plataforma }}">{{ plataformas.plataforma }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label for="id_estado">Estado Ticket <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3" aria-label="estado" name="estado" id="id_estado" required>
-                                {% for estados in estados %}
-                                <option value="{{ estados.estado }}">{{ estados.estado }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <label for="id_alianzaSolicitante">Alianza Solicitante <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3" aria-label="alianzaSolicitante" name="alianzaSolicitante"
-                                id="id_alianzaSolicitante" required>
-                                {% for alianzas in alianzas %}
-                                <option value="{{ alianzas.alianzaSolicitante }}">{{ alianzas.alianzaSolicitante }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label for="id_areaSolicitante">Area Solicitante <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3" aria-label="areaSolicitante" name="areaSolicitante"
-                                id="id_areaSolicitante" required>
-                                {% for areas in areas %}
-                                <option value="{{ areas.areaSolicitante }}">{{ areas.areaSolicitante }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col">
-                            <label for="id_responsable">Responsable Ticket <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3" aria-label="responsable" name="responsable"
-                                id="id_responsable" required>
-                                {% for responsables in responsables %}
-                                <option value="{{ responsables.responsable }}">{{ responsables.responsable }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div> -->
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
@@ -156,8 +60,9 @@
                 <th>Ticket</th>
                 <th>Requerimiento</th>
                 <th>Fecha Creacion</th>
-                <th>Fecha Pruebas</th>
-                <th>Usuario Creo</th>
+                <th>Plataforma</th>
+                <th>Estado</th>
+                <th>Responsable</th>
             </tr>
         </thead>
         <tbody>
@@ -166,9 +71,10 @@
                 <!-- <td><a href="{% url 'req_detail' reqs.id %}">{{reqs.ticket}}</a></td> -->
                 <td>{{reqs.ticket}}</td>
                 <td>{{reqs.requerimiento}}</td>
-                <td>{{reqs.fechaCreacion}}</td>
-                <td>{{reqs.fechaPruebas}}</td>
-                <td>{{reqs.user.username}}</td>
+                <td>{{reqs.fechacreacion}}</td>
+                <td>{{reqs.plataforma}}</td>
+                <td>{{reqs.estado}}</td>
+                <td>{{reqs.responsable}}</td>
             </tr>
             {% endfor %}
         </tbody>

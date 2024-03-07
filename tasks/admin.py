@@ -3,42 +3,43 @@ from .models import Requerimientos,MedioCarga,Plataforma,Estado,AlianzaSolicitan
 
 class RequerimientosAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Requerimientos"""
-    list_display=["id","ticket",'requerimiento','fechacreacion','estado']
+    list_display=["ticket",'requerimiento','fechacreacion','plataforma','estado']
     readonly_fields=("fecharegistro",'fecha_actualizacion')
     search_fields=['ticket','requerimiento']
-    list_filter = ['estado']
+    list_filter = ['estado','plataforma']
     ordering=['-fechacreacion','requerimiento']
+    #ordering=['-id']
     list_display_links=['ticket']
     list_per_page=25 #Paginacion
     
 class MedioCargaAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Medio Carga"""
-    list_display=["id",'mediocarga']
+    list_display=['mediocarga']
     readonly_fields=("fechaRegistro",'fechaActualizacion')
 
 class PlataformaAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Plataforma"""
-    list_display=["id",'plataforma']
+    list_display=['plataforma']
     readonly_fields=("fechaRegistro",'fechaActualizacion')
     
 class EstadoAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Estado"""
-    list_display=['id','estado']
+    list_display=['estado']
     readonly_fields=("fechaRegistro",'fechaActualizacion')
 
 class AlianzaAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Alianza"""
-    list_display=["id",'alianzasolicitante']
+    list_display=['alianzasolicitante']
     readonly_fields=("fechaRegistro",'fechaActualizacion')
     
 class AreaAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Areas"""
-    list_display=["id",'areasolicitante']
+    list_display=['areasolicitante']
     readonly_fields=("fechaRegistro",'fechaActualizacion')
     
 class ResponsableAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Responsables"""
-    list_display=["id",'responsable']
+    list_display=['responsable']
     readonly_fields=("fechaRegistro",'fechaActualizacion')
 # Register your models here.
 admin.site.register(Requerimientos, RequerimientosAdmin)

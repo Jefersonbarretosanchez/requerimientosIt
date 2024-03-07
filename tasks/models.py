@@ -6,7 +6,7 @@ from .choices import sprints
 # Create your models here.
 class MedioCarga(models.Model):
     """Class representa los medios de carga"""
-    mediocarga=models.CharField(max_length=50)
+    mediocarga=models.CharField(max_length=50,verbose_name="Medio De Carga")
     fechaRegistro=models.DateTimeField(auto_now_add=True)
     fechaActualizacion=models.DateTimeField(auto_now=True)
     
@@ -15,7 +15,7 @@ class MedioCarga(models.Model):
        
 class Plataforma(models.Model):
     """Class representa las plataformas"""
-    plataforma=models.CharField(max_length=50)
+    plataforma=models.CharField(max_length=50,verbose_name="Plataforma")
     fechaRegistro=models.DateTimeField(auto_now_add=True)
     fechaActualizacion=models.DateTimeField(auto_now=True)
     
@@ -24,7 +24,7 @@ class Plataforma(models.Model):
 
 class Estado(models.Model):
     """Class representa los estados"""
-    estado=models.CharField(max_length=50)
+    estado=models.CharField(max_length=50,verbose_name="Estado")
     fechaRegistro=models.DateTimeField(auto_now_add=True)
     fechaActualizacion=models.DateTimeField(auto_now=True)
     
@@ -33,7 +33,7 @@ class Estado(models.Model):
 
 class AlianzaSolicitante(models.Model):
     """Class representa las alianzas"""
-    alianzasolicitante=models.CharField(max_length=50)
+    alianzasolicitante=models.CharField(max_length=50,verbose_name="Alianza")
     fechaRegistro=models.DateTimeField(auto_now_add=True)
     fechaActualizacion=models.DateTimeField(auto_now=True)
     
@@ -42,7 +42,7 @@ class AlianzaSolicitante(models.Model):
 
 class AreaSolicitante(models.Model):
     """Class representa las Areas"""
-    areasolicitante=models.CharField(max_length=50)
+    areasolicitante=models.CharField(max_length=50,verbose_name="Area")
     fechaRegistro=models.DateTimeField(auto_now_add=True)
     fechaActualizacion=models.DateTimeField(auto_now=True)
     
@@ -51,7 +51,7 @@ class AreaSolicitante(models.Model):
 
 class Responsable(models.Model):
     """Class representa los responsables"""
-    responsable=models.CharField(max_length=50)
+    responsable=models.CharField(max_length=50,verbose_name="Responsable")
     fechaRegistro=models.DateTimeField(auto_now_add=True)
     fechaActualizacion=models.DateTimeField(auto_now=True)
     
