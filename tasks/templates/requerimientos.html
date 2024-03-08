@@ -63,10 +63,11 @@
                 <th>Plataforma</th>
                 <th>Estado</th>
                 <th>Responsable</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            {% for reqs in reqs %}
+            {% for reqs in requerimientos %}
             <tr>
                 <!-- <td><a href="{% url 'req_detail' reqs.id %}">{{reqs.ticket}}</a></td> -->
                 <td>{{reqs.ticket}}</td>
@@ -75,10 +76,32 @@
                 <td>{{reqs.plataforma}}</td>
                 <td>{{reqs.estado}}</td>
                 <td>{{reqs.responsable}}</td>
+                <td class="col-md-1 text-center"><i class="fa-solid fa-pen-to-square"></i> <i
+                        class="fa-solid fa-trash"></i></td>
             </tr>
             {% endfor %}
         </tbody>
 
     </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1"><i class="fa-solid fa-backward-step" style="color: #ffffff;"> </i></a>
+            <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-backward" style="color: #ffffff;">
+                </i></a>
+            {% endif %}
+
+            <span class="current" style="color: #ffffff;">
+                Pag {{ page_obj.number }} de {{ page_obj.paginator.num_pages }} 
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-forward" style="color: #ffffff;"> </i></a>
+            <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-forward-step" style="color: #ffffff;"></i></a>
+            {% endif %}
+        </span>
+    </div>
+
 </div>
 {% endblock %}

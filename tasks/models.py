@@ -80,3 +80,26 @@ class Requerimientos(models.Model):
     def __str__(self):
         return str(self.requerimiento)
     #+ ' by ' + str(self.user.username)
+
+class Activos(models.Model):
+    """Class representing a requerimiento"""
+    identificacion=models.CharField(max_length=100,verbose_name="# Identificacion")
+    nombrecompleto=models.CharField(max_length=100, blank=True, verbose_name="Nombre Completo")
+    fechaingreso=models.DateField(blank=False, verbose_name="Fecha Ingreso")
+    estado=models.CharField(max_length=100, verbose_name="Estado")
+    cargo=models.CharField(max_length=100,verbose_name="Cargo")
+    area=models.CharField(max_length=100,verbose_name="Area")
+    correo_electronico=models.EmailField(verbose_name="Correo")
+    #estado=models.ForeignKey(Estado,null=True,blank=True,on_delete=models.PROTECT,verbose_name="Estado De Ejecución")
+    # alianzasolicitante=models.ForeignKey(AlianzaSolicitante,null=True,blank=True,on_delete=models.PROTECT,verbose_name="Alianza")
+    # areasolicitante=models.ForeignKey(AreaSolicitante,null=True,blank=True,on_delete=models.PROTECT,verbose_name="Area")
+    # responsable=models.ForeignKey(Responsable,null=True,blank=True,on_delete=models.PROTECT,verbose_name="Responsable")
+    # pasoproduccion=models.DateField(null=True, blank=True,verbose_name="Fecha Paso Producción")
+    # observaciones=models.TextField(null=True,blank=True,verbose_name="Observaciones y/o Avances")
+    # fecharegistro=models.DateTimeField(auto_now_add=True,verbose_name="Fecha Registro BD")
+    # fecha_actualizacion=models.DateTimeField(auto_now=True,verbose_name="Fecha Actualización BD")
+    user= models.ForeignKey(User, on_delete=models.CASCADE,verbose_name="Usuario")
+        
+    def __str__(self):
+        return str(self.nombrecompleto)
+    #+ ' by ' + str(self.user.username)
