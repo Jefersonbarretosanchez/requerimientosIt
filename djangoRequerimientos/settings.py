@@ -134,6 +134,8 @@ if not DEBUG:  # Tell Django to copy statics to the 'staticfiles' directory
     STATICFILES = 'whitenoise.storage.CompressedManifestStaticFliesStorage'
 
 LOGIN_URL = '/login'
+
+LOGIN_REDIRECT_URL='/requerimientos'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

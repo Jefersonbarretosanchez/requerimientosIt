@@ -1,0 +1,26 @@
+<!-- Modal Registros Nuevos -->
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5 w-100 text-center">Editar Requerimiento: {{ object }}</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="{% url 'editar' object.id %}" method="POST">
+            {% csrf_token %}
+            <div class="modal-body">
+                {{form.as_p}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-success" onclick="alert()">Registrar</button>
+                <!-- <button class="btn btn-primary d-none btnLoading" type="button" disabled id="loadingButton">
+                    <span class="spinner-border spinner-border-sm " aria-hidden="true"></span>
+                    <span role="status">Loading...</span>
+                </button> -->
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- Fin del modal Creacion Requerimientos-->

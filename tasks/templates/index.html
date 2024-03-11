@@ -2,32 +2,14 @@
 <html lang="es-es">
 
 <head>
+  {% load static %}
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="300" >
+  <meta http-equiv="refresh" content="300">
   <title>CRUD Requerimientos</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/requerimientos.css' %}">
   <style>
-    :root {
-      --button-principal-background: #B60A44;
-      --button-principal-color: #FFFFFF;
-      --button-principal-border: #B60A44;
-      --button-secundario-background: #3C3C3B;
-      --button-secundario-color: #FFFFFF;
-      --button-secundario-border: #3C3C3B;
-    }
-
-    body {
-      background-color: #232f40;
-    }
-
-    .btn-custom {
-      color: var(--button-principal-color) !important;
-      background-color: var(--button-principal-background) !important;
-      border-color: var(--button-principal-border) !important;
-      text-transform: uppercase !important;
-      font-size: 0.8rem !important;
-    }
   </style>
 </head>
 
@@ -71,11 +53,21 @@
   {% block content %}
 
   {% endblock %}
+  <!-- Boostrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/24bba0bedc.js" crossorigin="anonymous"></script>
+  <!-- Sweet Alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{% static 'js/utils/notificacionSwal.js' %}"></script>
+  <!-- Jquery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+  {% block extrajs %}
+
+  {% endblock extrajs %}
 </body>
 
 </html>

@@ -1,10 +1,178 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1>Hola Esta es mi primer prueba</h1>
-{{error}}
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>SIGNUP</button>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecnologia</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+    <div class="container-general" id="general">
+        <div class="container-form" id="formL">
+            <h1 class="titulo text-center">¡Bienvenido a Requerimientos TI!</h1>
+            <p class="descripcion text-center">Ingresa a tu cuenta para visualizar los requerimientos</p>
+            <!-- tabs -->
+            <ul class="tabs-links">
+                <li class="tab-link active">Iniciar Sesion</li>
+                <li class="tab-link" hidden>Registrate</li>
+            </ul>
+            <!-- Formulario Login -->
+            <form name="formLogin" id="formLogin" class="formulario  active" action="" method="POST">
+                {% csrf_token %}
+                {{error}}
+                <div class="error-text">
+                </div>
+                <div class="grupo-input">
+                    <i class="iconos fa-solid fa-user"></i>
+                    <input type="text" placeholder="usuario" class="input-text" name="username" maxlength="150"
+                        id="id_username" autocomplete="username">
+
+                </div>
+                <div class="grupo-input">
+                    <i class="iconos fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Contraseña" name="password" id="id_password"
+                        autocomplete="current-password" class="input-text clave">
+                    <button type="button" class="icono fa-solid fa-eye mostrarClave"></button>
+                </div>
+
+                <!-- <a href="#" class="link">¿Olvidaste tu contraseña?</a> -->
+                <button class="btn" id="btnLogin"> Iniciar Sesion</button>
+            </form>
+
+            <!-- Formulario Registro -->
+            <form action="" method="POST" id="formRegistro" class="formulario ">
+                <div class="error-text ">
+                    <p></p>
+                </div>
+                <input type="text" placeholder="usuario" class="input-text" name="usuario" autocomplete="off">
+                <div class="grupo-input">
+                    <input type="password" placeholder="Contraseña" name="password" class="input-text clave">
+                    <button type="button" class="icono fa-solid fa-eye mostrarClave"></button>
+                    <input type="hidden" name="perfil" class="form-control input-text" id="perfil" value="Usuario">
+                </div>
+                <button class="btn" id="btnRegistro" type="button"> Crear Cuenta</button>
+            </form>
+        </div>
+        <div id="onError"></div>
+    </div>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/24bba0bedc.js" crossorigin="anonymous"></script>
+    <script>
+        // tabs Formulario
+        const tabLink = document.querySelectorAll(".tab-link");
+        const formularios = document.querySelectorAll(".formulario");
+
+        for (let x = 0; x < tabLink.length; x++) {
+            tabLink[x].addEventListener("click", () => {
+                // Removemos la clase actiev de los tabs
+                tabLink.forEach((tab) => tab.classList.remove("active"));
+
+                // Agregamos la clase active de los tabs que se le da click
+                tabLink[x].classList.add("active");
+
+                // Mostramos el formulario que se le de click
+                formularios.forEach((form) => form.classList.remove("active"));
+                formularios[x].classList.add("active");
+            });
+        }
+        // Mostrar contraseña
+        const mostrarClave = document.querySelectorAll(".mostrarClave");
+        const inputPass = document.querySelectorAll(".clave");
+
+        for (let i = 0; i < mostrarClave.length; i++) {
+            mostrarClave[i].addEventListener("click", () => {
+                if (inputPass[i].type === "password") {
+                    // cambiamos el tipo password a text
+                    inputPass[i].setAttribute("type", "text");
+
+                    // Quitamos la clases del icono
+                    mostrarClave[i].classList.remove("fa-eye");
+
+                    // mostramos el icono del ojo con una diagonal
+                    mostrarClave[i].classList.add("fa-eye-slash");
+
+                    // agregamos la clase active
+                    mostrarClave[i].classList.add("active");
+                } else {
+                    // cambiamos el tipo de texto a password
+                    inputPass[i].setAttribute("type", "password");
+
+                    // Quitamos la clases del icono
+                    mostrarClave[i].classList.remove("fa-eye-slash");
+
+                    // mostramos el nuevo icono
+                    mostrarClave[i].classList.add("fa-eye");
+
+                    // Quitamos la clase active
+                    mostrarClave[i].classList.remove("active");
+                }
+            });
+        }
+
+        // login
+        if (document.getElementById('btnLogin')) {
+            const btnLogin = document.getElementById('btnLogin');
+
+            btnLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                const msError = document.querySelector('#formLogin .error-text');
+                msError.innerHTML = "";
+                msError.classList.remove('active');
+
+                username = formLogin.username.value.trim();
+                password = formLogin.password.value.trim();
+
+                if (username == "" && password == "") {
+                    mostrarError('Por favor ingrese su usuario y contraseña', msError);
+                    inputError([formLogin.username, formLogin.password]);
+                    return false;
+                } else {
+                    inputErrorRemove([formLogin.username, formLogin.password]);
+                }
+
+                if (username == "" || username == null) {
+                    mostrarError('Por Favor Ingrese Su Usuario', msError);
+                    inputError([formLogin.username]);
+                    formLogin.username.focus();
+                    return false;
+                }
+
+                if (password == "" || password == null) {
+                    mostrarError('Por favor ingrese su contraseña', msError);
+                    inputError([formLogin.password]);
+                    formLogin.password.focus();
+                    return false;
+                }
+
+                formLogin.submit();
+                return true;
+            })
+        }
+
+        // Funcionesque muestran errores
+        // mostrar el error
+        function mostrarError(mensaje, msError) {
+            msError.classList.add('active');
+
+            msError.innerHTML = '<p>' + mensaje + '</p>';
+        }
+
+        function inputError(datos) {
+            for (let i = 0; i < datos.length; i++) {
+                datos[i].classList.add('input-error');
+            }
+        }
+
+        function inputErrorRemove(datos) {
+            for (let i = 0; i < datos.length; i++) {
+                datos[i].classList.remove('input-error');
+            }
+        }
+    </script>
+</body>
+
+</html>

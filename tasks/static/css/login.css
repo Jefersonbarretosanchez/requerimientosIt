@@ -1,10 +1,17 @@
+.button-edit {
+    color: #4593e6;
+}
+
+.button-delete {
+    color: #e05252;
+}
+
+label {
+    font-weight: bold;
+    font-family: copperplate;
+}
+
 :root {
-    --button-principal-background: #B60A44;
-    --button-principal-color: #FFFFFF;
-    --button-principal-border: #B60A44;
-    --button-secundario-background: #3C3C3B;
-    --button-secundario-color: #FFFFFF;
-    --button-secundario-border: #3C3C3B;
     --color-negro: #364e65;
     --color-texto: #727c77;
     --color-rojo: #ed0722;
@@ -13,28 +20,11 @@
     --color-celeste: #3793f6;
     --color-input: #f9f9ee;
 }
+
 body {
     background-color: #232f40;
 }
-label {
-    font-weight: bold;
-    font-family: copperplate;
-}
-.btn-custom {
-    color: var(--button-principal-color) !important;
-    background-color: var(--button-principal-background) !important;
-    border-color: var(--button-principal-border) !important;
-    text-transform: uppercase !important;
-    font-size: 0.8rem !important;
-}
 
-.button-edit {
-    color: #4593e6;
-}
-
-.button-delete {
-    color: #e05252;
-}
 .logo {
     width: 30%;
     position: absolute;
