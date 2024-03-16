@@ -3,24 +3,24 @@ from import_export.admin import ImportExportActionModelAdmin
 from django.contrib import admin
 from .models import Requerimientos,MedioCarga,Plataforma,Estado,AlianzaSolicitante,AreaSolicitante,Responsable
 
-class RequerimientosResources(resources.ModelResource):
-    """Importar exportar"""
-    fields=(
-        'id',
-        'ticket',
-        'requerimiento',
-        'fechacreacion',
-        'sprintdesarrollo'
-        'fechapruebas',
-        'mediocarga',
-        'plataforma',
-    )
-    class Meta:
-        model=Requerimientos
+# class RequerimientosResources(resources.ModelResource):
+#     """Importar exportar"""
+#     fields=(
+#         'id',
+#         'ticket',
+#         'requerimiento',
+#         'fechacreacion',
+#         'sprintdesarrollo'
+#         'fechapruebas',
+#         'mediocarga',
+#         'plataforma',
+#     )
+#     class Meta:
+#         model=Requerimientos
 
-class RequerimientosAdmin(ImportExportActionModelAdmin):
+class RequerimientosAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Requerimientos"""
-    resource_class=RequerimientosResources
+    # resource_class=RequerimientosResources
     list_display=["ticket",'requerimiento','fechacreacion','plataforma','estado']
     readonly_fields=("fecharegistro",'fecha_actualizacion')
     search_fields=['ticket','requerimiento']
