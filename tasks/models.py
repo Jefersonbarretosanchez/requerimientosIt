@@ -76,6 +76,11 @@ class Requerimientos(models.Model):
     fecharegistro=models.DateTimeField(auto_now_add=True,verbose_name="Fecha Registro BD")
     fecha_actualizacion=models.DateTimeField(auto_now=True,verbose_name="Fecha Actualización BD")
     user= models.ForeignKey(User, on_delete=models.CASCADE,verbose_name="Usuario")
+    
+    class Meta:
+        verbose_name_plural='Requerimientos'
+        verbose_name='Requerimiento'
+        db_table  = "requerimientos"
         
     def __str__(self):
         return str(self.requerimiento)
@@ -103,3 +108,11 @@ class Activos(models.Model):
     def __str__(self):
         return str(self.nombrecompleto)
     #+ ' by ' + str(self.user.username)
+
+class Pruebas(models.Model):
+    """Prueba"""
+    nombre = models.CharField(blank=True, max_length=50)
+    
+    class Meta:
+        verbose_name_plural="Prueba T"
+        verbose_name="Prueba"
