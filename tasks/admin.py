@@ -1,5 +1,5 @@
-from import_export import resources
-from import_export.admin import ImportExportActionModelAdmin
+# from import_export import resources
+# from import_export.admin import ImportExportActionModelAdmin
 from django.contrib import admin
 from .models import Requerimientos,MedioCarga,Plataforma,Estado,AlianzaSolicitante,AreaSolicitante,Responsable
 
