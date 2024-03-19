@@ -1,4 +1,7 @@
 """Modulo"""
+import datetime
+from django.db.models import Q
+from django.db.models.query import QuerySet
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -31,7 +34,14 @@ class RequerimientosList(LoginRequiredMixin, ListView):
     context_object_name = 'requerimientos'
     queryset = Requerimientos.objects.all().order_by('-fechacreacion')
     paginate_by = 10
-
+    
+    # def get_queryset(self):
+    #     query=self.request.GET.get('search')
+    #     post_list=Requerimientos.objects.filter(
+    #         Q(ticket=query) | Q(requerimiento=query)
+    #     ).distinct()
+    #     return post_list
+        
 class RequerimientosCreate(LoginRequiredMixin, CreateView):
     """Creacion de Requerimientos"""
     model = Requerimientos
@@ -51,7 +61,7 @@ class RequerimientosCreate(LoginRequiredMixin, CreateView):
 class RequerimientosUpdate(LoginRequiredMixin,UpdateView):
     """Actualiza Requerimientos"""
     model = Requerimientos
-    form_class = RequerimientosForm
+    form_class = RequerimientosFormEdit
     template_name = 'edit.html'
     success_url = reverse_lazy('requerimientos')
 
