@@ -1,8 +1,5 @@
 """Modulo"""
-import datetime
-from django.db.models import Q
-from django.db.models.query import QuerySet
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -14,9 +11,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic import View, ListView, CreateView, UpdateView, FormView, TemplateView,DeleteView
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from tasks.forms import *
+from django.views.generic import ListView, CreateView, UpdateView, FormView, TemplateView, DeleteView
+from .forms import *
 from tasks.models import Requerimientos, MedioCarga, AlianzaSolicitante, AreaSolicitante, Plataforma, Estado, Responsable
 
 
@@ -27,6 +23,7 @@ class Inicio(LoginRequiredMixin, TemplateView):
     """Funcion Lista Requerimientos En El Home"""
     template_name = 'dashboard.html'
 
+
 class RequerimientosList(LoginRequiredMixin, ListView):
     """Funcion Lista Requerimientos En El Home"""
     model = Requerimientos
@@ -34,14 +31,15 @@ class RequerimientosList(LoginRequiredMixin, ListView):
     context_object_name = 'requerimientos'
     queryset = Requerimientos.objects.all().order_by('-fechacreacion')
     paginate_by = 10
-    
+
     # def get_queryset(self):
     #     query=self.request.GET.get('search')
     #     post_list=Requerimientos.objects.filter(
     #         Q(ticket=query) | Q(requerimiento=query)
     #     ).distinct()
     #     return post_list
-        
+
+
 class RequerimientosCreate(LoginRequiredMixin, CreateView):
     """Creacion de Requerimientos"""
     model = Requerimientos
@@ -58,7 +56,8 @@ class RequerimientosCreate(LoginRequiredMixin, CreateView):
             new_req.save()
             return redirect('requerimientos')
 
-class RequerimientosUpdate(LoginRequiredMixin,UpdateView):
+
+class RequerimientosUpdate(LoginRequiredMixin, UpdateView):
     """Actualiza Requerimientos"""
     model = Requerimientos
     form_class = RequerimientosFormEdit
@@ -69,12 +68,28 @@ class RequerimientosUpdate(LoginRequiredMixin,UpdateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-class RequerimientosDelete(LoginRequiredMixin,DeleteView):
+
+class RequerimientosDelete(LoginRequiredMixin, DeleteView):
     """Elimina Requerimientos"""
-    model=Requerimientos
+    model = Requerimientos
     template_name = 'requerimientos_confirm_delete.html'
     success_url = reverse_lazy('requerimientos')
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        """ Datos para un modal generico:
+            action_url: es el path donde va ejecutar el update / delete
+            title: titulo del modal
+            path_generales: se puede usar para llamar a un script js e inscrustarlo en el modal para
+            cosas mas en especifico.
+        """
+        context['obj_delete'] = self.get_object()
+        context["action_url"] = reverse_lazy('delete/',args=(str(self.get_object().id),))
+        context["title"] = "Eliminar campus"
+        return context
+
+
 class Login(FormView):
     model = User
     template_name = 'login.html'
@@ -92,40 +107,12 @@ class Login(FormView):
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super(Login, self).form_valid(form)
-    
+
+
 @login_required
 def cerrar_sesion(request):
     logout(request)
     return redirect('login')
-    
-class ActivosList(LoginRequiredMixin, ListView):
-    """Funcion Lista Requerimientos En El Home"""
-    model = Activos
-    template_name = 'home.html'
-    paginate_by = 10
-    form_class = ActivosForm
-
-    def get_queryset(self):
-        return self.model.objects.all().order_by('-fechaingreso')
-
-    def get_context_data(self):
-        contexto = {}
-        contexto['activos'] = self.get_queryset()
-        contexto['form'] = self.form_class
-        return contexto
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, self.get_context_data())
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            new_req = form.save(commit=False)
-            new_req.user = request.user
-            print(new_req)
-            new_req.save()
-            return redirect('activos')
-
 
 @login_required
 def home(request):
@@ -215,6 +202,7 @@ def requerimientos(request):
                 'error': 'Ingresa datos validos'
             })
 
+
 @login_required
 def create_req(request):
     if request.method == 'GET':
@@ -234,10 +222,12 @@ def create_req(request):
                 'error': 'Ingresa datos validos'
             })
 
+
 @login_required
 def req_detail(request, reql_id):
     reql = get_object_or_404(Requerimientos, pk=reql_id)
     return render(request, 'req_detail.html', {'reql': reql})
+
 
 def signin(request):
     if request.method == 'GET':
@@ -255,6 +245,7 @@ def signin(request):
         else:
             login(request, user)
             return redirect('requerimientos')
+
 
 @login_required
 def tablero(request):

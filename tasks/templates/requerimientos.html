@@ -8,12 +8,12 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4 col-xxl-4">
-                <form role="search"  action="" method="get">
-                <label for="input-search" style="color: white;"><strong>Nombre Del
-                        Requerimiento</strong></label>
-                <input type="text" class="form-control" id="input-search" name="search" placeholder="Requerimiento">
-                <!-- <button class="btn btn-outline-succes" type="submit"> Buscar</button> -->
-            </form>
+                <form role="search" action="" method="get">
+                    <label for="input-search" style="color: white;"><strong>Nombre Del
+                            Requerimiento</strong></label>
+                    <input type="text" class="form-control" id="input-search" name="search" placeholder="Requerimiento">
+                    <!-- <button class="btn btn-outline-succes" type="submit"> Buscar</button> -->
+                </form>
             </div>
             <div class="col-5 col-sm-6 col-md-3 col-lg-4 col-xl-4 col-xxl-4">
                 <label for="input-anio" style="color: white;"><strong>Año</strong></label>
@@ -45,7 +45,7 @@
             {% for reqs in requerimientos %}
             <tr>
                 <!-- <td><a href="{% url 'req_detail' reqs.id %}">{{reqs.ticket}}</a></td> -->
-                <td>{{reqs.ticket}}</td>
+                <td class="prueba">{{reqs.ticket}}</td>
                 <td>{{reqs.requerimiento}}</td>
                 <td>{{reqs.fechacreacion}}</td>
                 <td>{{reqs.plataforma}}</td>

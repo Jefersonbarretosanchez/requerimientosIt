@@ -50,7 +50,6 @@ class ResponsableAdmin(admin.ModelAdmin):
     list_display = ['responsable']
     readonly_fields = ("fechaRegistro", 'fechaActualizacion')
 
-
 # Register your models here.
 admin.site.register(Requerimientos, RequerimientosAdmin)
 admin.site.register(MedioCarga, MedioCargaAdmin)

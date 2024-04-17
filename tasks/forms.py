@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Requerimientos,Activos
+from .models import Requerimientos
 
 
 class RequerimientosForm(ModelForm):
@@ -201,73 +201,6 @@ class RequerimientosFormEdit(ModelForm):
                     'class':'form-control',
                     'placeholder':'Introduzca las observacione en este campo',
                     'id':'id_observaciones'
-                }
-            )
-        }
-
-class ActivosForm(ModelForm):
-    """Formulario para Registro de Requerimientos"""
-    class Meta:
-        """Modelo y campos"""
-        model = Activos
-        fields = ['identificacion', 'nombrecompleto',
-                  'fechaingreso', 'estado', 'cargo', 'area', 'correo_electronico']
-        widgets = {
-            'identificacion': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Numero identificacion',
-                    'required': 'required',
-                    'id': 'id_identificacion'
-                }
-            ),
-            'nombrecompleto': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Nombre nombrecompleto',
-                    'required': 'required',
-                    'id': 'id_nombrecompleto'
-                }
-            ),
-            'fechaingreso': forms.DateInput(
-                attrs={
-                    'type': 'date',
-                    'class': 'form-control',
-                    'placeholder': 'Fecha ingreso Req',
-                    'required': 'required',
-                    'id': 'id_fechaingreso',
-                }
-            ),
-            'estado': forms.DateInput(
-                attrs={
-                    'type': 'text',
-                    'class': 'form-control',
-                    'placeholder': 'Estado',
-                    'id': 'id_estado',
-                }
-            ),
-            'cargo': forms.DateInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Cargo',
-                    'required': 'required',
-                    'id': 'id_cargo',
-                }
-            ),
-            'area': forms.DateInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'area',
-                    'required': 'required',
-                    'id': 'id_area',
-                }
-            ),
-            'correo_electronico': forms.EmailInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Correo',
-                    'required': 'required',
-                    'id': 'id_correo_electronico',
                 }
             )
         }
