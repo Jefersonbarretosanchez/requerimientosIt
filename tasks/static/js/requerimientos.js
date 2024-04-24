@@ -1,12 +1,8 @@
 document.addEventListener('keyup', e => {
     var inputText=e.target.value.toString().toLowerCase();
-
-    console.log(inputText)
     let tableBody = document.getElementById("tbody-requerimientos");
     let tableRows = tableBody.getElementsByTagName("tr");
-    // console.log(tableRows)
     for (let i = 0; i < tableRows.length; i++) {
-        // console.log(tableRows[i].cells[1].textContent);
         let textoConsulta = tableRows[i].cells[1].textContent
             .toString()
             .toLowerCase();
