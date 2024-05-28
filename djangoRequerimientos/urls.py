@@ -31,14 +31,6 @@ urlpatterns = [
     path('create/', RequerimientosCreate.as_view(), name='crear'),
     path('edit/<int:pk>/', RequerimientosUpdate.as_view(), name='editar'),
     path('delete/<int:pk>/', RequerimientosDelete.as_view(), name='eliminar'),
-    path('requerimientos/<int:reql_id>/', views.req_detail, name='req_detail'),
     
-    path('tablero/', views.tablero, name='tablero'),
-    
-    path('signup/', views.signup, name='signup'),
-      
-   # path('activos/', ActivosList.as_view(), name='activos'),
-    
-    
-
+    path('tablero/', views.tablero, name='tablero'), 
 ]

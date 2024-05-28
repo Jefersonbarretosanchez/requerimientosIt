@@ -1,28 +1,22 @@
 {% extends 'index.html' %}
 
 {% block content %}
-
 <div class="container mt-2">
     <h1 style="text-align: center; color: white;">Requerimientos Desarrollos S4L</h1>
 
     <div class="container">
         <div class="row">
-            <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8">
+            <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-10 col-xxl-10">
                 <form role="search" action="" method="get">
-                    <label for="input-search" style="color: white;"><strong>Nombre Del
-                            Requerimiento</strong></label>
-                    <input type="text" class="form-control" id="input-search" placeholder="Requerimiento">
-                    <!-- <button class="btn btn-outline-succes" type="submit"> Buscar</button> -->
+                    <label for="input-search" style="color: white;"><strong>Buscar</strong></label>
+                    <input type="text" class="form-control" id="input-search" name="q" placeholder="Ingresa el valor que deseas buscar..." value="{{ query }}">
                 </form>
             </div>
-            <!-- <div class="col-5 col-sm-6 col-md-3 col-lg-4 col-xl-4 col-xxl-4">
-                <label for="input-anio" style="color: white;"><strong>Año</strong></label>
-                <input type="text" class="form-control" id="input-anio" placeholder="Año">
-            </div> -->
-            <div class="col-7 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mt-1">
+            <div class="col-7 col-sm-6 col-md-2 col-lg-2 col-xl-2 col-xxl-2 mt-1">
                 <br>
                 <button type="button" class="btn btn-custom" onclick="abrir_modal_creacion('{% url 'crear' %}')">
-                    Nuevo Requerimiento</button>
+                    Nuevo Requerimiento
+                </button>
             </div>
         </div>
     </div>
@@ -44,32 +38,34 @@
         <tbody id="tbody-requerimientos">
             {% for reqs in requerimientos %}
             <tr>
-                <!-- <td><a href="{% url 'req_detail' reqs.id %}">{{reqs.ticket}}</a></td> -->
-                <td class="prueba">{{reqs.ticket}}</td>
-                <td>{{reqs.requerimiento}}</td>
-                <td>{{reqs.fechacreacion}}</td>
-                <td>{{reqs.plataforma}}</td>
-                <td>{{reqs.estado}}</td>
-                <td>{{reqs.responsable}}</td>
+                <td class="prueba">{{ reqs.ticket }}</td>
+                <td>{{ reqs.requerimiento }}</td>
+                <td>{{ reqs.fechacreacion }}</td>
+                <td>{{ reqs.plataforma.plataforma }}</td>
+                <td>{{ reqs.estado.estado }}</td>
+                <td>{{ reqs.responsable.responsable }}</td>
                 <td class="col-md-1 text-center">
-                    <!-- <a href="{% url 'editar' reqs.id %}" class="btn">a</a> -->
-                    <button onclick="abrir_modal_edicion('{% url 'editar' reqs.id %}')" class="btn"><i
-                            class="fa-solid fa-pen-to-square"></i></button>
-                    <button onclick="abrir_modal_eliminacion('{% url 'eliminar' reqs.id %}')" class="btn"><i
-                            class="fa-solid fa-trash"></i></button>
+                    <button onclick="abrir_modal_edicion('{% url 'editar' reqs.id %}')" class="btn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button onclick="abrir_modal_eliminacion('{% url 'eliminar' reqs.id %}')" class="btn">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
-
     </table>
 
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
-            <a href="?page=1"><i class="fa-solid fa-backward-step" style="color: #ffffff;"> </i></a>
-            <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-backward" style="color: #ffffff;">
-                </i></a>
+            <a href="?page=1{% if query %}&q={{ query }}{% endif %}">
+                <i class="fa-solid fa-backward-step" style="color: #ffffff;"></i>
+            </a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                <i class="fa-solid fa-backward" style="color: #ffffff;"></i>
+            </a>
             {% endif %}
 
             <span class="current" style="color: #ffffff;">
@@ -77,27 +73,22 @@
             </span>
 
             {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-forward" style="color: #ffffff;">
-                </i></a>
-            <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-forward-step"
-                    style="color: #ffffff;"></i></a>
+            <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                <i class="fa-solid fa-forward" style="color: #ffffff;"></i>
+            </a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">
+                <i class="fa-solid fa-forward-step" style="color: #ffffff;"></i>
+            </a>
             {% endif %}
         </span>
     </div>
-
 </div>
 
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true"
-    role="dialog">
-
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true" role="dialog">
 </div>
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true"
-    role="dialog">
-
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true" role="dialog">
 </div>
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"
-    role="dialog">
-
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" role="dialog">
 </div>
 {% endblock %}
 
@@ -106,34 +97,18 @@
     var $ = jQuery.noConflict();
     function abrir_modal_edicion(url) {
         $('#updateModal').load(url, function () {
-            $(this).modal('show')
-        })
+            $(this).modal('show');
+        });
     }
     function abrir_modal_creacion(url) {
         $('#createModal').load(url, function () {
-            $(this).modal('show')
-        })
+            $(this).modal('show');
+        });
     }
     function abrir_modal_eliminacion(url) {
         $('#deleteModal').load(url, function () {
-            $(this).modal('show')
-        })
-    }
-    function alert() {
-        notificacionSwal('Actualizacion', 'Requerimiento Actualizado', 'success', 'OK');
-    }
-    const btnsEliminacion = document.querySelectorAll(".btnEliminacion");
-    function confirmar_delete() { }
-    btnsEliminacion.forEach((btn) => {
-        btn.addEventListener("click", function (e) {
-            e.preventDefault();
-            Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-            });
+            $(this).modal('show');
         });
-    });
+    }
 </script>
-
-{% endblock extrajs %}
+{% endblock %}

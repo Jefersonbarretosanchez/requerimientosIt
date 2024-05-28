@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import IntegrityError
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -13,32 +15,56 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, CreateView, UpdateView, FormView, TemplateView, DeleteView
 from .forms import *
-from tasks.models import Requerimientos, MedioCarga, AlianzaSolicitante, AreaSolicitante, Plataforma, Estado, Responsable
+from tasks.models import Requerimientos
 
 
 # Create your views here.
-
-
 class Inicio(LoginRequiredMixin, TemplateView):
     """Funcion Lista Requerimientos En El Home"""
     template_name = 'dashboard.html'
 
 
 class RequerimientosList(LoginRequiredMixin, ListView):
-    """Funcion Lista Requerimientos En El Home"""
+    """Función Lista Requerimientos En El Home"""
     model = Requerimientos
     template_name = 'requerimientos.html'
     context_object_name = 'requerimientos'
-    queryset = Requerimientos.objects.all().order_by('-fechacreacion')
     paginate_by = 10
 
-    # def get_queryset(self):
-    #     query=self.request.GET.get('search')
-    #     post_list=Requerimientos.objects.filter(
-    #         Q(ticket=query) | Q(requerimiento=query)
-    #     ).distinct()
-    #     return post_list
+    def get_queryset(self):
+        queryset = Requerimientos.objects.all().order_by('-fechacreacion')
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(ticket__icontains=query) |
+                Q(requerimiento__icontains=query) |
+                Q(plataforma__plataforma__icontains=query) |
+                Q(estado__estado__icontains=query) |
+                Q(responsable__responsable__icontains=query)
+            )
+        return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('q', '')
+        queryset = self.get_queryset()
+
+        paginator = Paginator(queryset, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            requerimientos = paginator.page(page)
+        except PageNotAnInteger:
+            requerimientos = paginator.page(1)
+        except EmptyPage:
+            requerimientos = paginator.page(paginator.num_pages)
+
+        context['requerimientos'] = requerimientos
+        context['page_obj'] = requerimientos
+        context['is_paginated'] = requerimientos.has_other_pages()
+        context['query'] = query
+
+        return context
 
 class RequerimientosCreate(LoginRequiredMixin, CreateView):
     """Creacion de Requerimientos"""
@@ -78,17 +104,6 @@ class RequerimientosDelete(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        """ Datos para un modal generico:
-            action_url: es el path donde va ejecutar el update / delete
-            title: titulo del modal
-            path_generales: se puede usar para llamar a un script js e inscrustarlo en el modal para
-            cosas mas en especifico.
-        """
-        context['obj_delete'] = self.get_object()
-        context["action_url"] = reverse_lazy('delete/',args=(str(self.get_object().id),))
-        context["title"] = "Eliminar campus"
-        return context
-
 
 class Login(FormView):
     model = User
@@ -113,139 +128,6 @@ class Login(FormView):
 def cerrar_sesion(request):
     logout(request)
     return redirect('login')
-
-@login_required
-def home(request):
-   # cuando se quiera mostrar losm datos del usuario Logeado reqs = Requerimientos.objects.filter(user=request.user)
-    if request.method == 'GET':
-        return render(request, 'requerimientos.html', {'reqs': reqs, "page_obj": page_obj})
-    else:
-        try:
-            form = RequerimientosForm(request.POST)
-            new_req = form.save(commit=False)
-            new_req.user = request.user
-            new_req.save()
-            return redirect('requerimientos')
-        except ValueError:
-            return render(request, 'requerimientos.html', {
-                'reqs': reqs,
-                'form': RequerimientosForm,
-                'error': 'Ingresa datos validos'
-            })
-
-
-def signup(request):
-    if request.method == 'GET':
-        print('Metodo GET')
-        return render(request, 'login.html', {
-            'form': UserCreationForm
-        })
-    else:
-        if request.POST['password1'] == request.POST['password2']:
-            # registra usuario
-            try:
-                user = User.objects.create_user(
-                    username=request.POST['username'], password=request.POST['password1'])
-                user.save()
-                login(request, user)
-                return redirect('task')
-            except IntegrityError:
-                return render(request, 'login.html', {
-                    'form': UserCreationForm,
-                    'error': 'Usuario ya existe'
-                })
-        return render(request, 'login.html', {
-            'form': UserCreationForm,
-            'error': 'Contraseñas No Coinciden :('
-        })
-
-
-@login_required
-def requerimientos(request):
-    reqs = Requerimientos.objects.all()
-    medios = MedioCarga.objects.all()
-    plataformas = Plataforma.objects.all()
-    estados = Estado.objects.all()
-    alianzas = AlianzaSolicitante.objects.all()
-    areas = AreaSolicitante.objects.all()
-    responsables = Responsable.objects.all()
-    paginate_by = 10
-   # cuando se quiera mostrar losm datos del usuario Logeado reqs = Requerimientos.objects.filter(user=request.user)
-    if request.method == 'GET':
-        return render(request, 'requerimientos.html', {
-            'reqs': reqs,
-            'medios': medios,
-            'plataformas': plataformas,
-            'estados': estados,
-            'alianzas': alianzas,
-            'areas': areas,
-            'responsables': responsables,
-            'form': RequerimientosForm
-        })
-    else:
-        try:
-            form = RequerimientosForm(request.POST)
-            new_req = form.save(commit=False)
-            new_req.user = request.user
-            new_req.save()
-            return redirect('requerimientos')
-        except ValueError:
-            return render(request, 'requerimientos.html', {
-                'reqs': reqs,
-                'medios': medios,
-                'plataformas': plataformas,
-                'estados': estados,
-                'alianzas': alianzas,
-                'areas': areas,
-                'responsables': responsables,
-                'form': RequerimientosForm,
-                'error': 'Ingresa datos validos'
-            })
-
-
-@login_required
-def create_req(request):
-    if request.method == 'GET':
-        return render(request, 'home.html', {
-            'form': RequerimientosForm
-        })
-    else:
-        try:
-            form = RequerimientosForm(request.POST)
-            new_req = form.save(commit=False)
-            new_req.user = request.user
-            new_req.save()
-            return redirect('requerimientosc')
-        except ValueError:
-            return render(request, 'home.html', {
-                'form': RequerimientosForm,
-                'error': 'Ingresa datos validos'
-            })
-
-
-@login_required
-def req_detail(request, reql_id):
-    reql = get_object_or_404(Requerimientos, pk=reql_id)
-    return render(request, 'req_detail.html', {'reql': reql})
-
-
-def signin(request):
-    if request.method == 'GET':
-        return render(request, 'signin.html', {
-            'form': AuthenticationForm
-        })
-    else:
-        user = authenticate(
-            request, username=request.POST['username'], password=request.POST['password'])
-        if user is None:
-            return render(request, 'signin.html', {
-                'form': AuthenticationForm,
-                'error': 'Usuario No valido'
-            })
-        else:
-            login(request, user)
-            return redirect('requerimientos')
-
 
 @login_required
 def tablero(request):
