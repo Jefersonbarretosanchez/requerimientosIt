@@ -134,6 +134,15 @@ if not DEBUG:  # Tell Django to copy statics to the 'staticfiles' directory
     # and creating unique names for each version so they can safely be cached forever.
     STATICFILES = 'whitenoise.storage.CompressedManifestStaticFliesStorage'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'notificaciones.requerimientos@hotmail.com'
+EMAIL_HOST_PASSWORD = 'Requerimientos2024*'
+
+
 LOGIN_URL = '/login'
 
 LOGIN_REDIRECT_URL='/requerimientos'

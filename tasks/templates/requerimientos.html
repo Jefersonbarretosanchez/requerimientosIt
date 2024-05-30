@@ -97,18 +97,33 @@
     var $ = jQuery.noConflict();
     function abrir_modal_edicion(url) {
         $('#updateModal').load(url, function () {
-            $(this).modal('show');
-        });
+            $(this).modal('show')
+        })
     }
     function abrir_modal_creacion(url) {
         $('#createModal').load(url, function () {
-            $(this).modal('show');
-        });
+            $(this).modal('show')
+        })
     }
     function abrir_modal_eliminacion(url) {
         $('#deleteModal').load(url, function () {
-            $(this).modal('show');
-        });
+            $(this).modal('show')
+        })
     }
+    function alert() {
+        notificacionSwal('Actualizacion', 'Requerimiento Actualizado', 'success', 'OK');
+    }
+    const btnsEliminacion = document.querySelectorAll(".btnEliminacion");
+    function confirmar_delete() { }
+    btnsEliminacion.forEach((btn) => {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+            });
+        });
+    });
 </script>
 {% endblock %}

@@ -1,4 +1,5 @@
 """Modulo"""
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -66,6 +67,7 @@ class RequerimientosList(LoginRequiredMixin, ListView):
 
         return context
 
+
 class RequerimientosCreate(LoginRequiredMixin, CreateView):
     """Creacion de Requerimientos"""
     model = Requerimientos
@@ -78,8 +80,34 @@ class RequerimientosCreate(LoginRequiredMixin, CreateView):
         if form.is_valid():
             new_req = form.save(commit=False)
             new_req.user = request.user
-            print(new_req)
             new_req.save()
+
+            # Enviar correo electrónico al usuario que creó el requerimiento
+            asunto = "Nuevo requerimiento creado"
+            mensaje = """Se ha creado un nuevo requerimiento:
+
+**ID:** {id_requerimiento}
+**Nombre:** {nombre_requerimiento}
+**Descripción:** {descripcion_requerimiento}
+**Usuario Quien Lo Creo:** {nombre_usuario}
+
+"""
+            para = [new_req.user.email,'jeferson.barreto@scalalearning.com']  
+            de = "notificaciones.requerimientos@hotmail.com"
+            send_mail(
+                asunto,
+                mensaje.format(
+                    id_requerimiento=new_req.id,
+                    nombre_requerimiento=new_req.requerimiento,
+                    descripcion_requerimiento=new_req.ticket,
+                    nombre_usuario=new_req.user.username
+                    # url_requerimiento=f"http://{request.get_host()}{reverse('requerimientos_detail', args=(new_req.id,))}"
+                ),
+                de,
+                para,
+                fail_silently=False
+            )
+
             return redirect('requerimientos')
 
 
@@ -100,9 +128,6 @@ class RequerimientosDelete(LoginRequiredMixin, DeleteView):
     model = Requerimientos
     template_name = 'requerimientos_confirm_delete.html'
     success_url = reverse_lazy('requerimientos')
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
 
 
 class Login(FormView):
@@ -128,6 +153,7 @@ class Login(FormView):
 def cerrar_sesion(request):
     logout(request)
     return redirect('login')
+
 
 @login_required
 def tablero(request):
