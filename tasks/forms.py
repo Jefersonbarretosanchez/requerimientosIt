@@ -117,7 +117,8 @@ class RequerimientosFormEdit(ModelForm):
                     'class': 'form-control',
                     'placeholder': 'Nombre Requerimiento',
                     'required': 'required',
-                    'id': 'id_requerimiento'
+                    'id': 'id_requerimiento',
+                    'disabled':True
                 }
             ),
             'fechacreacion': forms.DateInput(

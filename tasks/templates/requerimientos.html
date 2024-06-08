@@ -9,7 +9,8 @@
             <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-10 col-xxl-10">
                 <form role="search" action="" method="get">
                     <label for="input-search" style="color: white;"><strong>Buscar</strong></label>
-                    <input type="text" class="form-control" id="input-search" name="q" placeholder="Ingresa el valor que deseas buscar..." value="{{ query }}">
+                    <input type="text" class="form-control" id="input-search" name="q"
+                        placeholder="Ingresa el valor que deseas buscar..." value="{{ query }}">
                 </form>
             </div>
             <div class="col-7 col-sm-6 col-md-2 col-lg-2 col-xl-2 col-xxl-2 mt-1">
@@ -84,11 +85,14 @@
     </div>
 </div>
 
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true" role="dialog">
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true"
+    role="dialog">
 </div>
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true" role="dialog">
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true"
+    role="dialog">
 </div>
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" role="dialog">
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"
+    role="dialog">
 </div>
 {% endblock %}
 
@@ -110,20 +114,41 @@
             $(this).modal('show')
         })
     }
-    function alert() {
-        notificacionSwal('Actualizacion', 'Requerimiento Actualizado', 'success', 'OK');
+
+    function enableDisabledFields(form) {
+        const disabledFields = form.querySelectorAll(':disabled');
+        disabledFields.forEach(field => field.disabled = false);
+        return disabledFields;
     }
-    const btnsEliminacion = document.querySelectorAll(".btnEliminacion");
-    function confirmar_delete() { }
-    btnsEliminacion.forEach((btn) => {
-        btn.addEventListener("click", function (e) {
-            e.preventDefault();
-            Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-            });
-        });
+
+    function restoreDisabledFields(fields) {
+        fields.forEach(field => field.disabled = true);
+    }
+
+    // Escucha el envío de formularios en los modales
+    document.addEventListener('submit', function (event) {
+        const form = event.target.closest('form');
+        if (form) {
+            const previouslyDisabledFields = enableDisabledFields(form);
+            setTimeout(() => restoreDisabledFields(previouslyDisabledFields), 0);
+        }
+    }, true);
+
+    // Mostrar alerta de SweetAlert si se actualizó correctamente
+    {% if request.GET.updated %}
+    Swal.fire({
+        title: 'Actualización Exitosa',
+        text: 'El requerimiento ha sido actualizado correctamente.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Remover el parámetro updated de la URL
+            const url = new URL(window.location);
+            url.searchParams.delete('updated');
+            window.history.replaceState({}, document.title, url.toString());
+        }
     });
+    {% endif %}
 </script>
 {% endblock %}

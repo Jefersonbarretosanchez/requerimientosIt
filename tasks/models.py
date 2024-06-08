@@ -77,6 +77,7 @@ class AreaSolicitante(models.Model):
 class Responsable(models.Model):
     """Class representa los responsables"""
     responsable=models.CharField(max_length=50,verbose_name="Responsable")
+    correo=models.EmailField(max_length=100,verbose_name="Correo Electronico")
     fechaRegistro=models.DateTimeField(auto_now_add=True)
     fechaActualizacion=models.DateTimeField(auto_now=True)
     

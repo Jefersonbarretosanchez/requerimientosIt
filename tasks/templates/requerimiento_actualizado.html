@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notificación de actualización de requerimiento</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
+
+      .container {
+        width: 650px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        background-color: #3f51b5;
+        color: #fff;
+        padding: 15px 20px;
+        border-radius: 5px 5px 0 0;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .content h2 {
+        font-size: 18px;
+        margin-top: 0;
+      }
+
+      .content p {
+        color: #000000;
+        margin-top: 5px;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      .content li {
+        font-size: 16px;
+      }
+
+      .disclaimer {
+        font-size: 12px;
+        color: #666;
+        margin-top: 20px;
+      }
+
+      .footer {
+        background-color: #f4f4f4;
+        padding: 15px 20px;
+        border-radius: 0 0 5px 5px;
+      }
+
+      .footer p {
+        text-align: center;
+        margin: 0;
+        font-size: 14px;
+        color: #666;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Notificación de actualización de requerimiento</h1>
+      </div>
+
+      <div class="content">
+        <h2>¡Hola {{ nombre_responsable }}!</h2>
+
+        <p>
+          Tu requerimiento <strong>{{ nombre_requerimiento }}</strong> ha sido
+          actualizado. Los detalles de los campos modificados son los siguientes:
+        </p>
+        <ul>
+          {% for campo, valor in cambios.items %}
+          <li><strong>{{ campo }}</strong>: {{ valor }}</li>
+          {% endfor %}
+        </ul>
+
+        <p>
+          El requerimiento fue actualizado por el usuario
+          <strong>{{ usuario_nombre }} {{ usuario_apellido }}</strong>.
+        </p>
+        <p>
+          Puedes acceder al requerimiento y gestionarlo en el siguiente enlace:
+        </p>
+        <p>
+          <a href="https://requerimientosit.onrender.com/requerimientos/"
+            >https://requerimientosit.onrender.com/requerimientos/</a
+          >
+        </p>
+        <p>Atentamente,</p>
+
+        <p>Equipo De Gestión De Requerimientos</p>
+
+        <div class="disclaimer">
+          Este correo electrónico se envía automáticamente y no requiere
+          respuesta. La dirección de correo electrónico utilizada para enviar
+          estas notificaciones no está monitoreada y las respuestas no serán
+          recibidas.
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>&copy; 2024 Tecnologia Scala Learning</p>
+      </div>
+    </div>
+  </body>
+</html>

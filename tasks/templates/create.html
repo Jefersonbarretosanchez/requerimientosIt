@@ -6,21 +6,23 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <form action="{% url 'crear' %}" method="POST">
+        <form action="{% url 'crear' %}" method="POST" id="crearRequerimientoForm">
             {% csrf_token %}
             <div class="modal-body">
                 {{form.as_p}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-success">Registrar</button>
-                <!-- <button class="btn btn-primary d-none btnLoading" type="button" disabled id="loadingButton">
-                    <span class="spinner-border spinner-border-sm " aria-hidden="true"></span>
-                    <span role="status">Loading...</span>
-                </button> -->
+                <button type="button" class="btn" data-bs-dismiss="modal" id="cancelBtn">Cancelar</button>
+                <button type="submit" class="btn btn-success" id="submitBtn">Registrar</button>
             </div>
         </form>
     </div>
 </div>
 </div>
 <!-- Fin del modal Creacion Requerimientos-->
+<script>
+    document.getElementById("crearRequerimientoForm").addEventListener("submit", function () {
+        document.getElementById("submitBtn").disabled = true; // Deshabilitar el botón de enviar 
+        document.getElementById("cancelBtn").disabled = true;    
+    });
+</script>

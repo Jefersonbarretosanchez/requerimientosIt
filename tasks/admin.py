@@ -47,7 +47,7 @@ class AreaAdmin(admin.ModelAdmin):
 
 class ResponsableAdmin(admin.ModelAdmin):
     """Configuracion Modulo Admin Responsables"""
-    list_display = ['responsable']
+    list_display = ['responsable','correo']
     readonly_fields = ("fechaRegistro", 'fechaActualizacion')
 
 # Register your models here.

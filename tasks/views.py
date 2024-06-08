@@ -1,5 +1,6 @@
 """Modulo"""
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -84,31 +85,35 @@ class RequerimientosCreate(LoginRequiredMixin, CreateView):
 
             # Enviar correo electrónico al usuario que creó el requerimiento
             asunto = "Nuevo requerimiento creado"
-            mensaje = """Se ha creado un nuevo requerimiento:
-
-**ID:** {id_requerimiento}
-**Nombre:** {nombre_requerimiento}
-**Descripción:** {descripcion_requerimiento}
-**Usuario Quien Lo Creo:** {nombre_usuario}
-
-"""
-            para = [new_req.user.email,'jeferson.barreto@scalalearning.com']  
+            mensaje = render_to_string('requerimiento_creado.html', {
+                'nombre_responsable': new_req.responsable,
+                'nombre_requerimiento': new_req.requerimiento,
+                'ticket_requerimiento': new_req.ticket,
+                'alianza_solicitante': new_req.alianzasolicitante,
+                'plataforma_relacionada': new_req.plataforma,
+                'medio_carga': new_req.mediocarga,
+                'area_solicitante': new_req.areasolicitante,
+                'responsable_requerimiento': new_req.responsable,
+                'fecha_creacion': new_req.fechacreacion,
+                'usuario_nombre': request.user.first_name,
+                'usuario_apellido': request.user.last_name,
+            })
+            para = [new_req.responsable.correo,
+                    'jeferson.barreto@scalalearning.com']
             de = "notificaciones.requerimientos@hotmail.com"
-            send_mail(
+
+            email = EmailMultiAlternatives(
                 asunto,
-                mensaje.format(
-                    id_requerimiento=new_req.id,
-                    nombre_requerimiento=new_req.requerimiento,
-                    descripcion_requerimiento=new_req.ticket,
-                    nombre_usuario=new_req.user.username
-                    # url_requerimiento=f"http://{request.get_host()}{reverse('requerimientos_detail', args=(new_req.id,))}"
-                ),
+                mensaje,
                 de,
-                para,
-                fail_silently=False
+                para
             )
+            email.attach_alternative(mensaje, "text/html")
+            email.send(fail_silently=False)
 
             return redirect('requerimientos')
+        else:
+            return self.form_invalid(form)
 
 
 class RequerimientosUpdate(LoginRequiredMixin, UpdateView):
@@ -119,8 +124,40 @@ class RequerimientosUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('requerimientos')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        updated_req = self.object
+        changed_fields = form.changed_data
+
+        # Crear el contexto con los campos modificados
+        cambios = {}
+        for field in changed_fields:
+            field_verbose_name = self.model._meta.get_field(field).verbose_name
+            cambios[field_verbose_name] = form.cleaned_data[field]
+
+        # Enviar correo electrónico con los campos modificados
+        if cambios:
+            asunto = "Requerimiento actualizado"
+            mensaje_html = render_to_string('requerimiento_actualizado.html', {
+                'nombre_responsable': updated_req.responsable,
+                'nombre_requerimiento': updated_req.requerimiento,
+                'cambios': cambios,
+                'usuario_nombre': self.request.user.first_name,
+                'usuario_apellido': self.request.user.last_name,
+            })
+            para = [updated_req.responsable.correo,
+                    'jeferson.barreto@scalalearning.com']
+            de = "notificaciones.requerimientos@hotmail.com"
+
+            email = EmailMultiAlternatives(
+                asunto,
+                mensaje_html,
+                de,
+                para
+            )
+            email.attach_alternative(mensaje_html, "text/html")
+            email.send(fail_silently=False)
+
+        return HttpResponseRedirect(self.get_success_url() + '?updated=True')
 
 
 class RequerimientosDelete(LoginRequiredMixin, DeleteView):

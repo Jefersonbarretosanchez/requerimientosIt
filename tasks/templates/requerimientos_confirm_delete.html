@@ -6,7 +6,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div> -->
 
-        <form action="{% url 'eliminar' object.id %}" method="POST">
+        <form action="{% url 'eliminar' object.id %}" method="POST" id="eliminarRequerimientoForm">
             {% csrf_token %}
             <div class="modal-body">
                 <img src="https://i.ibb.co/ws50NPY/image-17.png" alt="image-17" border="0" style="width: 30%;
@@ -19,18 +19,18 @@
                 <h5 class="text-center">Se eliminara de forma permanente este registro.</h5>
                 <br>
                 <div class="container text-center">
-                    <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger btnEliminacion">Eliminar</button>
+                    <button type="button" class="btn" data-bs-dismiss="modal" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn btn-danger btnEliminacion" id="submitBtn">Eliminar</button>
                 </div>
             </div>
-            <!-- <div class="modal-footer"> -->
-            <!-- <button class="btn btn-primary d-none btnLoading" type="button" disabled id="loadingButton">
-                    <span class="spinner-border spinner-border-sm " aria-hidden="true"></span>
-                    <span role="status">Loading...</span>
-                </button> -->
-            <!-- </div> -->
         </form>
     </div>
 </div>
 </div>
 <!-- Fin del modal Creacion Requerimientos-->
+<script>
+    document.getElementById("eliminarRequerimientoForm").addEventListener("submit", function () {
+        document.getElementById("submitBtn").disabled = true; // Deshabilitar el botón de enviar  
+        document.getElementById("cancelBtn").disabled = true;   
+    });
+</script>
