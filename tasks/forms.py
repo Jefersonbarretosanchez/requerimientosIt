@@ -9,7 +9,7 @@ class RequerimientosForm(ModelForm):
         """Modelo y campos"""
         model = Requerimientos
         fields = ['ticket', 'requerimiento',
-                  'fechacreacion', 'fechapruebas', 'mediocarga', 'plataforma', 'alianzasolicitante', 'areasolicitante', 'estado', 'responsable']
+                  'fechacreacion', 'mediocarga', 'plataforma', 'alianzasolicitante', 'areasolicitante', 'estado', 'responsable']
         widgets = {
             'ticket': forms.TextInput(
                 attrs={
@@ -35,15 +35,6 @@ class RequerimientosForm(ModelForm):
                     'placeholder': 'Fecha Creacion Req',
                     'required': 'required',
                     'id': 'id_fechaCreacion',
-                }
-            ),
-            'fechapruebas': forms.DateInput(
-                format='%Y-%m-%d',
-                attrs={
-                    'type': 'date',
-                    'class': 'form-control',
-                    'placeholder': 'Fecha Pruebas Req',
-                    'id': 'id_fechaPruebas',
                 }
             ),
             'mediocarga': forms.Select(

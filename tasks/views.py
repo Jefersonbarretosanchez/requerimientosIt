@@ -98,8 +98,7 @@ class RequerimientosCreate(LoginRequiredMixin, CreateView):
                 'usuario_nombre': request.user.first_name,
                 'usuario_apellido': request.user.last_name,
             })
-            para = [new_req.responsable.correo,
-                    'jeferson.barreto@scalalearning.com']
+            para = [new_req.responsable.correo]
             de = "notificaciones.requerimientos@hotmail.com"
 
             email = EmailMultiAlternatives(
@@ -110,6 +109,37 @@ class RequerimientosCreate(LoginRequiredMixin, CreateView):
             )
             email.attach_alternative(mensaje, "text/html")
             email.send(fail_silently=False)
+            
+            # Correos adicionales para notificaciones
+            control_requerimientos = [
+                {"nombre": "Jeferson Barreto", "correo": "jefebasan97@gmail.com "},
+                {"nombre": "Andres Vargas", "correo": "jefers97@gmail.com"},
+            ]
+
+            for referente in control_requerimientos:
+                mensaje_referente = render_to_string('requerimiento_creado.html', {
+                    'nombre_responsable': referente["nombre"],
+                    'nombre_requerimiento': new_req.requerimiento,
+                    'ticket_requerimiento': new_req.ticket,
+                    'alianza_solicitante': new_req.alianzasolicitante,
+                    'plataforma_relacionada': new_req.plataforma,
+                    'medio_carga': new_req.mediocarga,
+                    'area_solicitante': new_req.areasolicitante,
+                    'responsable_requerimiento': new_req.responsable,
+                    'fecha_creacion': new_req.fechacreacion,
+                    'usuario_nombre': request.user.first_name,
+                    'usuario_apellido': request.user.last_name,
+                })
+                para_referente = [referente["correo"]]
+
+                email_referente = EmailMultiAlternatives(
+                    asunto,
+                    mensaje_referente,
+                    de,
+                    para_referente
+                )
+                email_referente.attach_alternative(mensaje_referente, "text/html")
+                email_referente.send(fail_silently=False)
 
             return redirect('requerimientos')
         else:
@@ -144,8 +174,7 @@ class RequerimientosUpdate(LoginRequiredMixin, UpdateView):
                 'usuario_nombre': self.request.user.first_name,
                 'usuario_apellido': self.request.user.last_name,
             })
-            para = [updated_req.responsable.correo,
-                    'jeferson.barreto@scalalearning.com']
+            para = [updated_req.responsable.correo]
             de = "notificaciones.requerimientos@hotmail.com"
 
             email = EmailMultiAlternatives(
@@ -156,6 +185,31 @@ class RequerimientosUpdate(LoginRequiredMixin, UpdateView):
             )
             email.attach_alternative(mensaje_html, "text/html")
             email.send(fail_silently=False)
+
+        # Correos adicionales para notificaciones de control
+            control_requerimientos = [
+                {"nombre": "Jeferson Barreto", "correo": "jeferson.barreto@scalalearning.com"},
+                {"nombre": "Fabrizzio Garzon", "correo": "fabrizzio.garzon@scalalearning.com"},
+            ]
+
+            for referente in control_requerimientos:
+                mensaje_html_referente = render_to_string('requerimiento_actualizado.html', {
+                    'nombre_responsable': referente["nombre"],
+                    'nombre_requerimiento': updated_req.requerimiento,
+                    'cambios': cambios,
+                    'usuario_nombre': self.request.user.first_name,
+                    'usuario_apellido': self.request.user.last_name,
+                })
+                para_referente = [referente["correo"]]
+
+                email_referente = EmailMultiAlternatives(
+                    asunto,
+                    mensaje_html_referente,
+                    de,
+                    para_referente
+                )
+                email_referente.attach_alternative(mensaje_html_referente, "text/html")
+                email_referente.send(fail_silently=False)
 
         return HttpResponseRedirect(self.get_success_url() + '?updated=True')
 
