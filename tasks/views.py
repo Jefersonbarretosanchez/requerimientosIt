@@ -112,8 +112,8 @@ class RequerimientosCreate(LoginRequiredMixin, CreateView):
             
             # Correos adicionales para notificaciones
             control_requerimientos = [
-                {"nombre": "Jeferson Barreto", "correo": "jefebasan97@gmail.com "},
-                {"nombre": "Andres Vargas", "correo": "jefers97@gmail.com"},
+                {"nombre": "Jeferson Barreto", "correo": "jeferson.barreto@scalalearning.com"},
+                {"nombre": "Fabrizzio Garzon", "correo": "fabrizzio.garzon@scalalearning.com"},
             ]
 
             for referente in control_requerimientos:
